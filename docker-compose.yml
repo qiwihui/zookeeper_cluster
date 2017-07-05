@@ -1,7 +1,7 @@
 version: '2'
 services:
     zk1:
-        image: zookeeper
+        image: zookeeper:3.4.10
         container_name: zk1
         networks:
             - zknet
@@ -13,7 +13,7 @@ services:
             ZOO_SERVERS: server.1=zk1:2888:3888 server.2=zk2:2888:3888 server.3=zk3:2888:3888
 
     zk2:
-        image: zookeeper
+        image: zookeeper:3.4.10
         container_name: zk2
         networks:
             - zknet
@@ -25,7 +25,7 @@ services:
             ZOO_SERVERS: server.1=zk1:2888:3888 server.2=zk2:2888:3888 server.3=zk3:2888:3888
 
     zk3:
-        image: zookeeper
+        image: zookeeper:3.4.10
         container_name: zk3
         networks:
             - zknet
@@ -52,3 +52,4 @@ services:
 
 networks:
     zknet:
+      driver: bridge
