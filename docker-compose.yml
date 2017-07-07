@@ -1,46 +1,46 @@
 version: '2'
 services:
     zk1:
-        image: zookeeper:3.4.10
-        container_name: zk1
-        networks:
-            - zknet
-        restart: always
-        ports:
-            - 21811:2181
-        environment:
-            ZOO_MY_ID: 1
-            ZOO_SERVERS: server.1=zk1:2888:3888 server.2=zk2:2888:3888 server.3=zk3:2888:3888
+      extends:
+        file: common.yml
+        service: zookeeper
+      container_name: zk1
+      volumes:
+        - ./1/data:/data
+        - ./1/logs:/datalog
+        - ./conf/zoo.cfg:/conf/zoo.cfg
+      ports:
+        - "2181:2181"
 
     zk2:
-        image: zookeeper:3.4.10
-        container_name: zk2
-        networks:
-            - zknet
-        restart: always
-        ports:
-            - 21812:2181
-        environment:
-            ZOO_MY_ID: 2
-            ZOO_SERVERS: server.1=zk1:2888:3888 server.2=zk2:2888:3888 server.3=zk3:2888:3888
+      extends:
+        file: common.yml
+        service: zookeeper
+      container_name: zk2
+      volumes:
+        - ./2/data:/data
+        - ./2/logs:/datalog
+        - ./conf/zoo.cfg:/conf/zoo.cfg
+      ports:
+        - "2182:2181"
 
     zk3:
-        image: zookeeper:3.4.10
-        container_name: zk3
-        networks:
-            - zknet
-        restart: always
-        ports:
-            - 21813:2181
-        environment:
-            ZOO_MY_ID: 3
-            ZOO_SERVERS: server.1=zk1:2888:3888 server.2=zk2:2888:3888 server.3=zk3:2888:3888
+      extends:
+        file: common.yml
+        service: zookeeper
+      container_name: zk3
+      volumes:
+        - ./3/data:/data
+        - ./3/logs:/datalog
+        - ./conf/zoo.cfg:/conf/zoo.cfg
+      ports:
+        - "2183:2181"
 
     zkui:
         image: maauso/zkui
         container_name: zkui
         networks:
-            - zknet
+            - zoo
         ports:
             - "9090:9090"
         environment:
@@ -49,7 +49,6 @@ services:
             - zk1:zk1
             - zk2:zk2
             - zk3:zk3
-
 networks:
-    zknet:
+    zoo:
       driver: bridge

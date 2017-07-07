@@ -1,0 +1,10 @@
+version: '2'
+services:
+  zookeeper:
+    image: zookeeper:3.4.10
+    networks:
+      - "zoo"
+    restart: always
+    expose:
+      - "2888"
+      - "3888"
